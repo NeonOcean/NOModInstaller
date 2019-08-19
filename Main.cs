@@ -141,17 +141,17 @@ namespace NOModInstaller {
 		}
 
 		private static bool Uninstall () {
-			if(File.Exists(Mod.GetUninstallerFullPath().GetPath())) {
-				return UninstallApplication();
-			} else {
-				return UninstallAntique();
+			foreach(IO.PathContainer uninstallerPath in Mod.GetUninstallerFullPaths()) {
+				if(File.Exists(uninstallerPath.GetPath())) {
+					return UninstallApplication(uninstallerPath);
+				}
 			}
+
+			return UninstallAntique();
 		}
 
-		private static bool UninstallApplication () {
+		private static bool UninstallApplication (IO.PathContainer uninstallerPath) {
 			try {
-				IO.PathContainer uninstallerPath = Mod.GetUninstallerFullPath();
-
 				using(Process uninstallProcess = new Process() {
 					StartInfo = {
 						FileName = uninstallerPath.GetPath(),

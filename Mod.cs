@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Reflection;
@@ -10,7 +9,7 @@ namespace NOModInstaller {
 			get; private set;
 		}
 
-		public static IO.PathContainer UninstallerPath {
+		public static IO.PathContainer[] UninstallerPaths {
 			get; private set;
 		}
 
@@ -30,7 +29,14 @@ namespace NOModInstaller {
 			}
 
 			using(StreamReader uninstallerPathStream = new StreamReader(executingAssembly.GetManifestResourceStream(Entry.Namespace + ".Mod.Uninstaller Path.txt"))) {
-				UninstallerPath = new IO.PathContainer(uninstallerPathStream.ReadToEnd());
+				string[] uninstallerPathStrings = Tools.NormalizeLineEndings(uninstallerPathStream.ReadToEnd(), "\n").Split('\n');
+				IO.PathContainer[] uninstallerPaths = new IO.PathContainer[uninstallerPathStrings.Length];
+
+				for(int uninstallerPathIndex = 0; uninstallerPathIndex < uninstallerPathStrings.Length; uninstallerPathIndex++) {
+					uninstallerPaths[uninstallerPathIndex] = new IO.PathContainer(uninstallerPathStrings[uninstallerPathIndex]);
+				}
+
+				UninstallerPaths = uninstallerPaths;
 			}
 
 			using(StreamReader antiqueVersionFilesStream = new StreamReader(executingAssembly.GetManifestResourceStream(Entry.Namespace + ".Mod.Antique Version Files.xml"))) {
@@ -42,8 +48,14 @@ namespace NOModInstaller {
 			}
 		}
 
-		public static IO.PathContainer GetUninstallerFullPath () {
-			return new IO.PathContainer(Path.Combine(Paths.ModsPath.GetPath(), UninstallerPath.GetPath()));
+		public static IO.PathContainer[] GetUninstallerFullPaths () {
+			IO.PathContainer[] uninstallerFullPaths = new IO.PathContainer[UninstallerPaths.Length];
+
+			for(int uninstallerPathIndex = 0; uninstallerPathIndex < UninstallerPaths.Length; uninstallerPathIndex++) {
+				uninstallerFullPaths[uninstallerPathIndex] = new IO.PathContainer(Path.Combine(Paths.ModsPath.GetPath(), UninstallerPaths[uninstallerPathIndex].GetPath()));
+			}
+
+			return uninstallerFullPaths;
 		}
 
 		public static ZipArchive GetFilesArchive () {

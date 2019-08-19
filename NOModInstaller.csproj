@@ -139,6 +139,7 @@
     <Compile Include="Entry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Processes.cs" />
+    <Compile Include="Tools.cs" />
     <Compile Include="XML.cs" />
     <EmbeddedResource Include="Abort\Abort.resx">
       <DependentUpon>Abort.cs</DependentUpon>
