@@ -14,6 +14,15 @@ namespace NOModInstaller {
 		};
 
 		public static bool Run () {
+			if(Paths.Sims4Path == null) {
+				if(!Entry.Silent) {
+					Abort abortMenu = new Abort();
+					abortMenu.ShowDialog();
+				}
+
+				return false;
+			}
+
 			if(!Entry.Silent) {
 				ProgressBar progressBarMenu = new ProgressBar();
 				progressBarMenu.StartBackgroundWorker(Install);
@@ -281,13 +290,15 @@ namespace NOModInstaller {
 		}
 
 		private static bool EnableMods () {
-			if(!File.Exists(Paths.Sims4OptionsPath.GetPath()) || Entry.Silent) {
+			string sims4OptionsPath = Paths.Sims4OptionsPath.GetPath();
+
+			if(!File.Exists(sims4OptionsPath) || Entry.Silent) {
 				return true;
 			}
 
 			try {
-				string modsDisabledValue = INI.Read("options", "modsdisabled", Paths.Sims4OptionsPath.GetPath());
-				string scriptModsEnabledValue = INI.Read("options", "scriptmodsenabled", Paths.Sims4OptionsPath.GetPath());
+				string modsDisabledValue = INI.Read("options", "modsdisabled", sims4OptionsPath);
+				string scriptModsEnabledValue = INI.Read("options", "scriptmodsenabled", sims4OptionsPath);
 
 				bool changeValues = false;
 
@@ -299,9 +310,9 @@ namespace NOModInstaller {
 						}
 
 						changeValues = true;
-						INI.Write("options", "modsdisabled", "0", Paths.Sims4OptionsPath.GetPath());
+						INI.Write("options", "modsdisabled", "0", sims4OptionsPath);
 					} else {
-						INI.Write("options", "modsdisabled", "0", Paths.Sims4OptionsPath.GetPath());
+						INI.Write("options", "modsdisabled", "0", sims4OptionsPath);
 					}
 				}
 

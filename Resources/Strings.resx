@@ -123,6 +123,9 @@
   <data name="CleanUpFailure" xml:space="preserve">
     <value>Failed to clean up temporary files.</value>
   </data>
+  <data name="CouldNotFindSims4DirectoryMessageText" xml:space="preserve">
+    <value>We could not find your Sims 4 folder, please select it manually.</value>
+  </data>
   <data name="EnableModsFailure" xml:space="preserve">
     <value>Failed to enable mods. You'll have to do it manually later.</value>
   </data>
@@ -158,6 +161,9 @@
   </data>
   <data name="PhaseUninstallText" xml:space="preserve">
     <value>Uninstalling previous version.</value>
+  </data>
+  <data name="SelectedModsFolderMessageText" xml:space="preserve">
+    <value>Are you sure you want to install the mod here? It looks like you incorrectly selected the mods folder instead of your sims 4 folder.</value>
   </data>
   <data name="Sims4RunningText" xml:space="preserve">
     <value>We cannot install this mod while The Sims 4 is running.</value>

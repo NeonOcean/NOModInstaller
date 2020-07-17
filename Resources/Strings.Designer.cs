@@ -79,6 +79,15 @@ namespace NOModInstaller.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to We could not find your Sims 4 folder, please select it manually..
+        /// </summary>
+        internal static string CouldNotFindSims4DirectoryMessageText {
+            get {
+                return ResourceManager.GetString("CouldNotFindSims4DirectoryMessageText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failed to enable mods. You&apos;ll have to do it manually later..
         /// </summary>
         internal static string EnableModsFailure {
@@ -183,6 +192,15 @@ namespace NOModInstaller.Resources {
         internal static string PhaseUninstallText {
             get {
                 return ResourceManager.GetString("PhaseUninstallText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to install the mod here? It looks like you incorrectly selected the mods folder instead of your sims 4 folder..
+        /// </summary>
+        internal static string SelectedModsFolderMessageText {
+            get {
+                return ResourceManager.GetString("SelectedModsFolderMessageText", resourceCulture);
             }
         }
         

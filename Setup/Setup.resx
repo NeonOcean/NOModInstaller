@@ -239,6 +239,9 @@ Click install to begin.</value>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>409, 121</value>
   </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="$this.MaximumSize" type="System.Drawing.Size, System.Drawing">
     <value>425, 160</value>
   </data>

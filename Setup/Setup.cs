@@ -22,6 +22,18 @@ namespace NOModInstaller {
 
 		private void InstallButton_Click (object sender, EventArgs e) {
 			Hide();
+
+			if(Paths.Sims4Path == null) {
+				Advanced advancedMenu = new Advanced();
+
+				Hide();
+
+				MessageBox.Show(Localization.GetString("CouldNotFindSims4DirectoryMessageText"), "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				advancedMenu.ShowDialog();		
+
+				Close();
+			}
+
 			Main.Run();
 			Close();
 		}
