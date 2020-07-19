@@ -35,7 +35,7 @@ namespace NOModInstaller {
 
 		private static IO.PathContainer sims4Path = null;
 
-		private static string[] possibleSims4DirectoryNames = new string[] {
+		private static readonly string[] possibleSims4DirectoryNames = new string[] {
 			"The Sims 4",
 			"Los Sims 4",
 			"Des Sims 4",

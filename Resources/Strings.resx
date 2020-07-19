@@ -163,7 +163,7 @@
     <value>Uninstalling previous version.</value>
   </data>
   <data name="SelectedModsFolderMessageText" xml:space="preserve">
-    <value>Are you sure you want to install the mod here? It looks like you incorrectly selected the mods folder instead of your sims 4 folder.</value>
+    <value>Are you sure you want to install the mod to this directory? It looks like you incorrectly selected the mods folder instead of your sims 4 folder.</value>
   </data>
   <data name="Sims4RunningText" xml:space="preserve">
     <value>We cannot install this mod while The Sims 4 is running.</value>
@@ -182,5 +182,8 @@
   </data>
   <data name="UninstallStartupFailure" xml:space="preserve">
     <value>Failed to startup uninstaller.</value>
+  </data>
+  <data name="UninstallUnqiueFileCleanupFailure" xml:space="preserve">
+    <value>Failed to delete the previously installed version's files.</value>
   </data>
 </root>

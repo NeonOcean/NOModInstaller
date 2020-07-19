@@ -196,7 +196,7 @@ namespace NOModInstaller.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Are you sure you want to install the mod here? It looks like you incorrectly selected the mods folder instead of your sims 4 folder..
+        ///   Looks up a localized string similar to Are you sure you want to install the mod to this directory? It looks like you incorrectly selected the mods folder instead of your sims 4 folder..
         /// </summary>
         internal static string SelectedModsFolderMessageText {
             get {
@@ -255,6 +255,15 @@ namespace NOModInstaller.Resources {
         internal static string UninstallStartupFailure {
             get {
                 return ResourceManager.GetString("UninstallStartupFailure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to delete the previously installed version&apos;s files..
+        /// </summary>
+        internal static string UninstallUnqiueFileCleanupFailure {
+            get {
+                return ResourceManager.GetString("UninstallUnqiueFileCleanupFailure", resourceCulture);
             }
         }
     }

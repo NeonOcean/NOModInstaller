@@ -150,13 +150,21 @@ namespace NOModInstaller {
 		}
 
 		private static bool Uninstall () {
-			foreach(IO.PathContainer uninstallerPath in Mod.GetUninstallerFullPaths()) {
-				if(File.Exists(uninstallerPath.GetPath())) {
-					return UninstallApplication(uninstallerPath);
+			foreach(IO.PathContainer uninstallerPath in Mod.GetValidUninstallerPaths()) {
+				if(!UninstallApplication(uninstallerPath)) {
+					return false;
 				}
 			}
 
-			return UninstallAntique();
+			if(!UninstallAntique()) {
+				return false;
+			}
+
+			if(!UninstallCleanupUniqueFiles()) {
+				return false;
+			}
+
+			return true;
 		}
 
 		private static bool UninstallApplication (IO.PathContainer uninstallerPath) {
@@ -264,6 +272,21 @@ namespace NOModInstaller {
 			} catch(Exception e) {
 				if(!Entry.Silent) {
 					Error errorDialog = new Error(Localization.GetString("UninstallAntiqueDeleteFailure"), e.ToString());
+					errorDialog.ShowDialog();
+				}
+
+				return false;
+			}
+
+			return true;
+		}
+
+		private static bool UninstallCleanupUniqueFiles () {
+			try {
+				IO.DeleteFiles(Mod.GetValidUniqueFilePaths());
+			} catch(Exception e) {
+				if(!Entry.Silent) {
+					Error errorDialog = new Error(Localization.GetString("UninstallUnqiueFileCleanupFailure"), e.ToString());
 					errorDialog.ShowDialog();
 				}
 

@@ -42,7 +42,7 @@ namespace NOModInstaller {
 			string[] sims4PathSegments = sims4Path.GetSegments();
 
 			if(sims4PathSegments.Length >= 2) {
-				if(sims4PathSegments[sims4PathSegments.Length - 1].ToLower() == "mods") {
+				if(sims4PathSegments[sims4PathSegments.Length - 1].Equals("mods", StringComparison.OrdinalIgnoreCase)) {
 					if(MessageBox.Show(Localization.GetString("SelectedModsFolderMessageText"), "", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) != DialogResult.Yes) {
 						return;
 					}
@@ -50,7 +50,6 @@ namespace NOModInstaller {
 			}
 
 			Paths.Sims4Path = new IO.PathContainer(UserDirectoryTextbox.Text);
-
 
 			Hide();
 			Main.Run();

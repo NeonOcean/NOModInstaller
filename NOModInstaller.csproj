@@ -166,9 +166,6 @@
     <EmbeddedResource Include="Mod\Files.zip" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Mod\Uninstaller Path.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Mod\Name.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -181,6 +178,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icon\Icon.ico" />
+    <EmbeddedResource Include="Mod\Unique File Names.txt" />
+    <EmbeddedResource Include="Mod\Uninstaller Paths.xml" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">

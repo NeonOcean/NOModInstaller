@@ -9,7 +9,7 @@ namespace NOModInstaller {
 			get; private set;
 		}
 
-		public static IO.PathContainer[] UninstallerPaths {
+		public static UninstallerPath[] UninstallerPaths {
 			get; private set;
 		}
 
@@ -21,6 +21,10 @@ namespace NOModInstaller {
 			get; private set;
 		}
 
+		public static string[] UniqueFileNames {
+			get; private set;
+		}
+
 		static Mod () {
 			Assembly executingAssembly = Assembly.GetExecutingAssembly();
 
@@ -28,15 +32,8 @@ namespace NOModInstaller {
 				Name = nameStream.ReadToEnd();
 			}
 
-			using(StreamReader uninstallerPathStream = new StreamReader(executingAssembly.GetManifestResourceStream(Entry.Namespace + ".Mod.Uninstaller Path.txt"))) {
-				string[] uninstallerPathStrings = Tools.NormalizeLineEndings(uninstallerPathStream.ReadToEnd(), "\n").Split('\n');
-				IO.PathContainer[] uninstallerPaths = new IO.PathContainer[uninstallerPathStrings.Length];
-
-				for(int uninstallerPathIndex = 0; uninstallerPathIndex < uninstallerPathStrings.Length; uninstallerPathIndex++) {
-					uninstallerPaths[uninstallerPathIndex] = new IO.PathContainer(uninstallerPathStrings[uninstallerPathIndex]);
-				}
-
-				UninstallerPaths = uninstallerPaths;
+			using(StreamReader uninstallerPathsStream = new StreamReader(executingAssembly.GetManifestResourceStream(Entry.Namespace + ".Mod.Uninstaller Paths.xml"))) {
+				UninstallerPaths = (UninstallerPath[])XML.Read<UninstallerPath[]>(uninstallerPathsStream.ReadToEnd());
 			}
 
 			using(StreamReader antiqueVersionFilesStream = new StreamReader(executingAssembly.GetManifestResourceStream(Entry.Namespace + ".Mod.Antique Version Files.xml"))) {
@@ -46,16 +43,30 @@ namespace NOModInstaller {
 			using(StreamReader antiqueFileListsStream = new StreamReader(executingAssembly.GetManifestResourceStream(Entry.Namespace + ".Mod.Antique File Lists.xml"))) {
 				AntiqueFileLists = (AntiqueFileList[])XML.Read<AntiqueFileList[]>(antiqueFileListsStream.ReadToEnd());
 			}
+
+			using(StreamReader uniqueFileNamesStream = new StreamReader(executingAssembly.GetManifestResourceStream(Entry.Namespace + ".Mod.Unique File Names.txt"))) {
+				UniqueFileNames = Tools.NormalizeLineEndings(uniqueFileNamesStream.ReadToEnd(), "\n").Split('\n');
+			}
 		}
 
-		public static IO.PathContainer[] GetUninstallerFullPaths () {
-			IO.PathContainer[] uninstallerFullPaths = new IO.PathContainer[UninstallerPaths.Length];
+		public static IO.PathContainer[] GetValidUninstallerPaths () {
+			List<IO.PathContainer> validUninstallerPaths = new List<IO.PathContainer>();
 
 			for(int uninstallerPathIndex = 0; uninstallerPathIndex < UninstallerPaths.Length; uninstallerPathIndex++) {
-				uninstallerFullPaths[uninstallerPathIndex] = new IO.PathContainer(Path.Combine(Paths.ModsPath.GetPath(), UninstallerPaths[uninstallerPathIndex].GetPath()));
+				validUninstallerPaths.AddRange(UninstallerPaths[uninstallerPathIndex].FindValidPaths());
 			}
 
-			return uninstallerFullPaths;
+			return validUninstallerPaths.ToArray();
+		}
+
+		public static IO.PathContainer[] GetValidUniqueFilePaths () {
+			List<IO.PathContainer> validUniqueFilePaths = new List<IO.PathContainer>();
+
+			for(int uniqueFileNameIndex = 0; uniqueFileNameIndex < UniqueFileNames.Length; uniqueFileNameIndex++) {
+				validUniqueFilePaths.AddRange(IO.SearchForFilesNamed(Paths.ModsPath.ToString(), UniqueFileNames[uniqueFileNameIndex], 2));
+			}
+
+			return validUniqueFilePaths.ToArray();
 		}
 
 		public static ZipArchive GetFilesArchive () {
@@ -97,6 +108,37 @@ namespace NOModInstaller {
 				}
 
 				return fileList;
+			}
+		}
+
+		public enum UninstallerPathType {
+			RelativeToMods = 0,
+			UniqueFileName = 1
+		}
+
+		public class UninstallerPath {
+			public string Path {
+				get; set;
+			}
+
+			public UninstallerPathType Type {
+				get; set;
+			}
+
+			public List<IO.PathContainer> FindValidPaths () {
+				List<IO.PathContainer> validPaths = new List<IO.PathContainer>();
+
+				if(Type == UninstallerPathType.RelativeToMods) {
+					IO.PathContainer uninstallerPathObject = new IO.PathContainer(System.IO.Path.Combine(Paths.ModsPath.ToString(), Path));
+
+					if(File.Exists(uninstallerPathObject.ToString())) {
+						validPaths.Add(uninstallerPathObject);
+					}
+				} else if(Type == UninstallerPathType.UniqueFileName) {
+					validPaths.AddRange(IO.SearchForFilesNamed(Paths.ModsPath.ToString(), Path, 2));
+				}
+
+				return validPaths;
 			}
 		}
 	}
